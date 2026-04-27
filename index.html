@@ -11,34 +11,6 @@
 </head>
 <body>
   <div class="container" id="root">
-    <!-- <h1>
-      Todos
-      <button id="purge">Purge</button>
-    </h1>
-    <ul id="todos">
-      <li>
-        <label>
-          <input type="checkbox">
-          <span>
-            aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa 
-          </span>
-        </label>
-        <button>Del</button>
-      </li>
-      <li>
-        <label>
-          <input type="checkbox">
-          <span>
-            aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa 
-          </span>
-        </label>
-        <button>Del</button>
-      </li>
-    </ul>
-    <form id="add-form">
-      <input type="text">
-      <button>Add</button>
-    </form> -->
   </div>
 
   <script type="text/babel">
@@ -49,15 +21,39 @@
         return (
           <li>
             <label>
-              <input type="checkbox" />
+              <input type="checkbox" 
+              checked={props.todo.isCompleted}
+              onChange={() => {props.onCheckboxChange(props.todo.id)}}
+              />
                 <span>
                   {props.todo.title}
                 </span>
             </label>
-            <button onClick={() => {props.deleteHandler(props.todo.id)}}>Del</button>
+            <button onClick={() => {props.onDeleteClick(props.todo.id)}}>Del</button>
           </li>
         );
       }
+
+      const AddForm = (props) => {
+        const [title, setTitle] = React.useState('');
+
+        const handleTextChange = (e) => {
+          setTitle(e.currentTarget.value);
+        };
+
+        const handleSubmit = (e) => {
+          //htmlのイベントリスター同様、ブラウザ制御のための引数が用意されている。
+          e.preventDefault();
+          props.onSubmit(title);
+        };
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <input type="text" value={title} onChange={handleTextChange}/>
+            <button>Add</button>
+          </form>
+        );
+      };
 
       const App = () => {
         const [todos, setTodos] = React.useState([
@@ -65,6 +61,27 @@
           {id: 1, title: 'bbb', isCompleted: true},
           {id: 2, title: 'ccc', isCompleted: false},
         ]);
+
+        const handleAddFormSubmit = (title) => {
+          const newTodos = [...todos];
+          newTodos.push({
+            id: Date.now(),
+            title: title,
+            isCompleted: false,
+          });
+          setTodos(newTodos);
+        }
+
+        const handleTodoChecked = (id) => {
+          const newTodos = todos.map((todo) => {
+            return {
+              id: todo.id,
+              title: todo.title,
+              isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
+            }
+          });
+          setTodos(newTodos);
+        }
 
         const handleTodoDeleteClick = (id) => {
           if(!confirm('Sure?')) {
@@ -81,7 +98,8 @@
             <Todo
               key = {todo.id}
               todo = {todo}
-              deleteHandler = {handleTodoDeleteClick}
+              onDeleteClick = {handleTodoDeleteClick}
+              onCheckboxChange = {handleTodoChecked}
             />
           );
         });
@@ -95,10 +113,7 @@
             <ul id="todos">
               {TodoItems}
             </ul>
-            <form id="add-form">
-              <input type="text" />
-              <button>Add</button>
-            </form>
+            <AddForm onSubmit={handleAddFormSubmit} />
           </>
         );
       };
