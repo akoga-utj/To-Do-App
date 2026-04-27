@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>
+  <div class="container" id="root">
+    <!-- <h1>
       Todos
       <button id="purge">Purge</button>
     </h1>
@@ -38,14 +38,19 @@
     <form id="add-form">
       <input type="text">
       <button>Add</button>
-    </form>
+    </form> -->
   </div>
 
   <script type="text/babel">
     'use strict';
 
     {
-
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(
+        <p>
+        hello
+        </p>
+      );
     }
   </script>
 </body>
