@@ -65,6 +65,18 @@
           {id: 2, title: 'ccc', isCompleted: false},
         ]);
 
+        //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
+        const handlePurgeClick = () => {
+          const newTodos = todos.filter((todo) => {
+            return !todo.isCompleted;
+          });
+          
+          if (confirm("Sure?")) {
+            setTodos(newTodos);
+          }
+        }
+
+        //フォームの内容を受け取り、Todoリストに追加する。
         const handleAddFormSubmit = (title) => {
           const newTodos = [...todos];
           newTodos.push({
@@ -75,6 +87,7 @@
           setTodos(newTodos);
         }
 
+        //チェックボックスの入力時，stateに反映する。
         const handleTodoChecked = (id) => {
           const newTodos = todos.map((todo) => {
             return {
@@ -86,6 +99,7 @@
           setTodos(newTodos);
         }
 
+        //Delボタンが押された際、該当Todoアイテムをリストから削除する。
         const handleTodoDeleteClick = (id) => {
           if(!confirm('Sure?')) {
             return;
@@ -111,7 +125,7 @@
           <>
             <h1>
               Todos
-              <button id="purge">Purge</button>
+              <button onClick={handlePurgeClick}>Purge</button>
             </h1>
             <ul id="todos">
               {TodoItems}
