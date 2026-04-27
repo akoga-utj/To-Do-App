@@ -60,10 +60,27 @@
 
       const App = () => {
         const [todos, setTodos] = React.useState([
-          {id: 0, title: 'aaa', isCompleted: false},
-          {id: 1, title: 'bbb', isCompleted: true},
-          {id: 2, title: 'ccc', isCompleted: false},
+          // {id: 0, title: 'aaa', isCompleted: false},
+          // {id: 1, title: 'bbb', isCompleted: true},
+          // {id: 2, title: 'ccc', isCompleted: false},
         ]);
+
+        React.useEffect(() => {
+          let savedTodos;
+          if (localStorage.getItem('todos') === null) {
+            savedTodos = [];
+          } else {
+            savedTodos = JSON.parse(localStorage.getItem('todos'));
+          }
+
+          setTodos(savedTodos);
+        }, []);
+
+        //Todoリスト更新時の共通処理
+        const updateTodos = (newTodos) => {
+          setTodos(newTodos);
+          localStorage.setItem('todos', JSON.stringify(newTodos));
+        };
 
         //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
         const handlePurgeClick = () => {
@@ -72,9 +89,9 @@
           });
           
           if (confirm("Sure?")) {
-            setTodos(newTodos);
+            updateTodos(newTodos);
           }
-        }
+        };
 
         //フォームの内容を受け取り、Todoリストに追加する。
         const handleAddFormSubmit = (title) => {
@@ -84,8 +101,8 @@
             title: title,
             isCompleted: false,
           });
-          setTodos(newTodos);
-        }
+          updateTodos(newTodos);
+        };
 
         //チェックボックスの入力時，stateに反映する。
         const handleTodoChecked = (id) => {
@@ -96,8 +113,8 @@
               isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
             }
           });
-          setTodos(newTodos);
-        }
+          updateTodos(newTodos);
+        };
 
         //Delボタンが押された際、該当Todoアイテムをリストから削除する。
         const handleTodoDeleteClick = (id) => {
@@ -107,7 +124,7 @@
           const newTodos = todos.filter((todo) => {
             return todo.id !== id;
           });
-          setTodos(newTodos);
+          updateTodos(newTodos);
         };
 
         const TodoItems = todos.map((todo) => {
