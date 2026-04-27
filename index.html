@@ -54,7 +54,7 @@
                   {props.todo.title}
                 </span>
             </label>
-            <button>Del</button>
+            <button onClick={() => {props.deleteHandler(props.todo.id)}}>Del</button>
           </li>
         );
       }
@@ -66,11 +66,22 @@
           {id: 2, title: 'ccc', isCompleted: false},
         ]);
 
+        const handleTodoDeleteClick = (id) => {
+          if(!confirm('Sure?')) {
+            return;
+          }
+          const newTodos = todos.filter((todo) => {
+            return todo.id !== id;
+          });
+          setTodos(newTodos);
+        };
+
         const TodoItems = todos.map((todo) => {
           return (
             <Todo
               key = {todo.id}
               todo = {todo}
+              deleteHandler = {handleTodoDeleteClick}
             />
           );
         });
