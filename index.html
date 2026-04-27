@@ -36,6 +36,7 @@
 
       const AddForm = (props) => {
         const [title, setTitle] = React.useState('');
+        const inputRef = React.useRef(null);
 
         const handleTextChange = (e) => {
           setTitle(e.currentTarget.value);
@@ -45,11 +46,13 @@
           //htmlのイベントリスター同様、ブラウザ制御のための引数が用意されている。
           e.preventDefault();
           props.onSubmit(title);
+          setTitle('');
+          inputRef.current.focus();
         };
 
         return (
           <form onSubmit={handleSubmit}>
-            <input type="text" value={title} onChange={handleTextChange}/>
+            <input type="text" value={title} onChange={handleTextChange} ref={inputRef}/>
             <button>Add</button>
           </form>
         );
