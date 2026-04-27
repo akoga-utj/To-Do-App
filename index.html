@@ -45,7 +45,36 @@
     'use strict';
 
     {
+      const Todo = (props) => {
+        return (
+          <li>
+            <label>
+              <input type="checkbox" />
+                <span>
+                  {props.todo.title}
+                </span>
+            </label>
+            <button>Del</button>
+          </li>
+        );
+      }
+
       const App = () => {
+        const [todos, setTodos] = React.useState([
+          {id: 0, title: 'aaa', isCompleted: false},
+          {id: 1, title: 'bbb', isCompleted: true},
+          {id: 2, title: 'ccc', isCompleted: false},
+        ]);
+
+        const TodoItems = todos.map((todo) => {
+          return (
+            <Todo
+              key = {todo.id}
+              todo = {todo}
+            />
+          );
+        });
+
         return (
           <>
             <h1>
@@ -53,24 +82,7 @@
               <button id="purge">Purge</button>
             </h1>
             <ul id="todos">
-              <li>
-                <label>
-                  <input type="checkbox" />
-                  <span>
-                    aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa 
-                  </span>
-                </label>
-                <button>Del</button>
-              </li>
-              <li>
-                <label>
-                  <input type="checkbox" />
-                  <span>
-                    aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa 
-                  </span>
-                </label>
-                <button>Del</button>
-              </li>
+              {TodoItems}
             </ul>
             <form id="add-form">
               <input type="text" />
