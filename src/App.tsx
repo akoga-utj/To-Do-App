@@ -2,19 +2,28 @@ import React from "react";
 import "./style.css";
 import Todo from "./components/Todo.tsx";
 import AddForm from "./components/AddForm.tsx";
+import CategoryTab from "./components/CategoryTab.tsx";
 
 const App = () => {
         type Todo_item = {
           id: number,
           title: string,
+          refCategoryId: number,
           isCompleted: boolean,
         }
 
-        const [todos, setTodos] = React.useState<Todo_item[]          >([
-          // {id: 0, title: 'aaa', isCompleted: false},
-          // {id: 1, title: 'bbb', isCompleted: true},
-          // {id: 2, title: 'ccc', isCompleted: false},
+        const [todos, setTodos] = React.useState<Todo_item[]>([
+          // {id: 0, title: 'aaa', isCompleted: false, refCategoryId: 0},
         ]);
+
+        const [categories, setCategories] = React.useState([
+          {id: 0, name: "All"},
+          {id: 1, name: "1"},
+          {id: 2, name: "2"},
+          {id: 3, name: "3"},
+        ]);
+
+        const [nowSelectedCategoryId, setSelectedCategoryId] = React.useState(0);
 
         React.useEffect(() => {
           let parseTodos: Todo_item[];
@@ -36,6 +45,12 @@ const App = () => {
           localStorage.setItem('todos', JSON.stringify(newTodos));
         };
 
+        //表示カテゴリー変更時の処理
+        const handleCategorySelected = (id: number) => {
+          //alert(id);
+          setSelectedCategoryId(id);
+        };
+
         //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
         const handlePurgeClick = () => {
           const newTodos = todos.filter((todo: Todo_item) => {
@@ -48,11 +63,13 @@ const App = () => {
         };
 
         //フォームの内容を受け取り、Todoリストに追加する。
-        const handleAddFormSubmit = (title: string) => {
+        const handleAddFormSubmit = (title: string, categoryId: number) => {
+          console.log(categoryId);
           const newTodos = [...todos];
           newTodos.push({
             id: Date.now(),
             title: title,
+            refCategoryId: categoryId,
             isCompleted: false,
           });
           updateTodos(newTodos);
@@ -64,6 +81,7 @@ const App = () => {
             return {
               id: todo.id,
               title: todo.title,
+              refCategoryId: todo.refCategoryId,
               isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
             }
           });
@@ -82,12 +100,25 @@ const App = () => {
         };
 
         const TodoItems = todos.map((todo: Todo_item) => {
+          if(todo.refCategoryId === nowSelectedCategoryId || nowSelectedCategoryId === 0){
+            return (
+              <Todo
+                key = {todo.id}
+                todo = {todo}
+                onDeleteClick = {handleTodoDeleteClick}
+                onCheckboxChange = {handleTodoChecked}
+              />
+            );
+          }
+        });
+
+        const CategoryTabs = categories.map((category: any) => {
           return (
-            <Todo
-              key = {todo.id}
-              todo = {todo}
-              onDeleteClick = {handleTodoDeleteClick}
-              onCheckboxChange = {handleTodoChecked}
+            <CategoryTab
+            key = {category.id}
+            category = {category}
+            onTabChange = {handleCategorySelected}
+            nowSelectedCategoryId = {nowSelectedCategoryId}
             />
           );
         });
@@ -98,10 +129,17 @@ const App = () => {
               Todos
               <button onClick={handlePurgeClick}>Purge</button>
             </h1>
+            <div className="categoryTabs">
+              {CategoryTabs}
+            </div>
             <ul id="todos">
               {TodoItems}
             </ul>
-            <AddForm onSubmit={handleAddFormSubmit} />
+            <AddForm 
+            onSubmit={handleAddFormSubmit} 
+            categories={categories} 
+            nowSelectedCategoryId={nowSelectedCategoryId}
+            />
           </div>
         );
       };
