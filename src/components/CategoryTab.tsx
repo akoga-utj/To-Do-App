@@ -7,14 +7,12 @@ const CategoryTab = (props: any) => {
   }
   
   return (
-    <>
     <button
     className = {buttonClassName}
     onClick={() => {props.onTabChange(props.category.id)}}
     >
       {props.category.name}
     </button>
-    </>
   );
 }
 

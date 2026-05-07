@@ -62,7 +62,6 @@ li input {
 }
 
 li label {
-  background-color: aqua;
   min-width: 0;
   flex: auto; 
 }
