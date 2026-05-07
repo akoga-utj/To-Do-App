@@ -47,7 +47,7 @@ ul {
 
 li {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: flex-start;
   margin-top: 16px;
 }
@@ -62,7 +62,17 @@ li input {
 }
 
 li label {
-  margin-right: 8px;
+  background-color: aqua;
+  min-width: 0;
+  flex: auto; 
+}
+
+li select {
+  margin: 0 8px;
+}
+
+li span {
+  word-break: break-all;
 }
 
 form {

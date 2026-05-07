@@ -51,6 +51,24 @@ const App = () => {
           setSelectedCategoryId(id);
         };
 
+        //Todoアイテムの参照先カテゴリーを変更し、Todoアイテムリストを更新
+        const handleRefCategoryChanged = (ItemId: number, newRefCategoryId: number) => {
+          const newTodos = todos.map((todo: Todo_item) => {
+            if(todo.id === ItemId) {
+              return {
+                id: todo.id,
+                title: todo.title,
+                refCategoryId: newRefCategoryId,
+                isCompleted: todo.isCompleted,
+              };
+            }
+            else{
+              return todo;
+            }  
+          });
+          updateTodos(newTodos);
+        }
+
         //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
         const handlePurgeClick = () => {
           const newTodos = todos.filter((todo: Todo_item) => {
@@ -64,7 +82,6 @@ const App = () => {
 
         //フォームの内容を受け取り、Todoリストに追加する。
         const handleAddFormSubmit = (title: string, categoryId: number) => {
-          console.log(categoryId);
           const newTodos = [...todos];
           newTodos.push({
             id: Date.now(),
@@ -105,6 +122,8 @@ const App = () => {
               <Todo
                 key = {todo.id}
                 todo = {todo}
+                categories = {categories}
+                onCategoryChange = {handleRefCategoryChanged}
                 onDeleteClick = {handleTodoDeleteClick}
                 onCheckboxChange = {handleTodoChecked}
               />
