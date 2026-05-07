@@ -3,7 +3,9 @@ import React from "react";
 
 const Todo = (props: any) => {
   //ドロップダウンリストの値を受け取り、カテゴリー更新のトリガーとなるstate
-  const [categoryId, setCategoryId] = React.useState<number>(props.todo.refCategoryId);
+  const [categoryId, setCategoryId] = React.useState<number>(
+    props.todo.refCategoryId,
+  );
 
   //ドロップダウンリストの値が更新された際に発火。
   //・ドロップダウンリストの選択項目
@@ -18,23 +20,30 @@ const Todo = (props: any) => {
   return (
     <li>
       <label>
-        <input type="checkbox" 
+        <input
+          type="checkbox"
           checked={props.todo.isCompleted}
-          onChange={() => {props.onCheckboxChange(props.todo.id)}}
+          onChange={() => {
+            props.onCheckboxChange(props.todo.id);
+          }}
         />
-        <span>
-          {props.todo.title}
-        </span>
+        <span>{props.todo.title}</span>
       </label>
       <select value={String(categoryId)} onChange={handleCategoryChange}>
-            <option value="0">未定義</option>
-            <option value="1">{props.categories[1].name}</option>
-            <option value="2">{props.categories[2].name}</option>
-            <option value="3">{props.categories[3].name}</option>     
-          </select>
-      <button onClick={() => {props.onDeleteClick(props.todo.id)}}>Del</button>
+        <option value="0">未定義</option>
+        <option value="1">{props.categories[1].name}</option>
+        <option value="2">{props.categories[2].name}</option>
+        <option value="3">{props.categories[3].name}</option>
+      </select>
+      <button
+        onClick={() => {
+          props.onDeleteClick(props.todo.id);
+        }}
+      >
+        Del
+      </button>
     </li>
   );
-}
+};
 
 export default Todo;
