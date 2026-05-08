@@ -1,12 +1,25 @@
 import React from "react";
 
 const useCategories = () => {
-  const [categories, setCategories] = React.useState([
+  type Category_data = {
+    id: number,
+    name: string,
+  }
+
+  const [categories, setCategories] = React.useState<Category_data[]>([
     { id: 0, name: "All" },
     { id: 1, name: "1" },
     { id: 2, name: "2" },
     { id: 3, name: "3" },
   ]);
+
+  React.useEffect(() => {
+    let saved = localStorage.getItem("categories");
+
+    if (saved !== null) {
+      setCategories(JSON.parse(saved));
+    };
+  }, [])
 
   const [nameChangeCategoryId, setNameChangeCategoryId] = React.useState<number|null>(null);
 
@@ -69,6 +82,7 @@ const useCategories = () => {
     });
     
     setCategories(newCategories);
+    localStorage.setItem("categories", JSON.stringify(newCategories));
     setNameChangeCategoryId(null);
   }
 
