@@ -9,9 +9,11 @@ const CategoryTab = (props: any) => {
   return (
     <button
       className={buttonClassName}
-      onClick={() => {
+      onMouseDown={() => {
         props.onTabChange(props.category.id);
+        props.handleLongPress(props.category.id);
       }}
+      onMouseUp={props.timerStop}
     >
       {props.category.name}
     </button>

@@ -2,6 +2,7 @@ import "./style.css";
 import Todo from "./components/Todo.tsx";
 import AddForm from "./components/AddForm.tsx";
 import CategoryTab from "./components/CategoryTab.tsx";
+import RenameCategoryForm from "./components/RenameCategoryForm.tsx";
 import useTodos from "./hooks/useTodos.ts";
 import useCategories from "./hooks/useCategories.ts";
 
@@ -22,8 +23,15 @@ const App = () => {
     handleTodoDeleteClick,
   } = useTodos();
 
-  const { categories, nowSelectedCategoryId, handleCategorySelected } =
-    useCategories();
+  const { 
+    categories, 
+    nowSelectedCategoryId, 
+    nameChangeCategoryId, 
+    handleCategorySelected, 
+    renameCategory, 
+    handleLongPress,
+    timerStop,
+  } = useCategories();
 
   //Todoアイテム要素をカテゴリー判断して描写
   const TodoItems = todos.map((todo: Todo_item) => {
@@ -52,12 +60,20 @@ const App = () => {
         category={category}
         onTabChange={handleCategorySelected}
         nowSelectedCategoryId={nowSelectedCategoryId}
+        handleLongPress = {handleLongPress}
+        timerStop = {timerStop}
       />
     );
   });
 
   return (
     <div className="container">
+      {nameChangeCategoryId !== null && 
+      <RenameCategoryForm 
+      nameChangeCategoryId = {nameChangeCategoryId} 
+      categories = {categories} 
+      onSubmit = {renameCategory}
+      />}
       <h1>
         Todos
         <button onClick={handlePurgeClick}>Purge</button>
