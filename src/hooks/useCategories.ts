@@ -35,6 +35,27 @@ const useCategories = () => {
   };
 
   const renameCategory = (newName: string, id: number) => {
+    //id=0で呼び出されたときは何もせずウィンドウを閉じる(id=0はAll用だが、Allを対象にこの関数が呼ばれることはないため)
+    if(id === 0) {
+      setNameChangeCategoryId(null);
+      return;
+    }
+
+    //新しいカテゴリー名がNULLだったらalertを出して更新拒否
+    if(newName === "") {
+      alert("カテゴリー名は空白にできません");
+      return;
+    }
+
+    //すでに使われているカテゴリー名だったらalertを出して更新拒否
+    //forEachではreturnしてもループを抜けるどまりなので、関数としてreturnもしれくれるforを使う
+    for (const category of categories) {
+      if (category.name === newName) {
+        alert("名前が他のカテゴリーと重複しています");
+        return;
+      }
+    }
+
     const newCategories = categories.map((category) => {
       if(category.id === id) {
         return {
