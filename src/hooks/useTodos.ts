@@ -6,10 +6,15 @@ const useTodos = () => {
     title: string;
     refCategoryId: number;
     isCompleted: boolean;
+    isLimited: boolean;
+    limits?: {
+      year: number;
+      month: number;
+      day: number;
+    }
   };
 
   const [todos, setTodos] = React.useState<Todo_item[]>([
-    // {id: 0, title: 'aaa', isCompleted: false, refCategoryId: 0},
   ]);
 
   React.useEffect(() => {
@@ -39,12 +44,26 @@ const useTodos = () => {
   ) => {
     const newTodos = todos.map((todo: Todo_item) => {
       if (todo.id === ItemId) {
-        return {
+        if(todo.isLimited){
+          return {
           id: todo.id,
           title: todo.title,
           refCategoryId: newRefCategoryId,
           isCompleted: todo.isCompleted,
-        };
+          isLimited: todo.isLimited,
+          limits: todo.limits,
+          };
+        }
+        else{
+          return {
+          id: todo.id,
+          title: todo.title,
+          refCategoryId: newRefCategoryId,
+          isCompleted: todo.isCompleted,
+          isLimited: todo.isLimited,
+          };
+        }
+        
       } else {
         return todo;
       }
@@ -64,26 +83,53 @@ const useTodos = () => {
   };
 
   //フォームの内容を受け取り、Todoリストに追加する。
-  const handleAddFormSubmit = (title: string, categoryId: number) => {
+  const handleAddFormSubmit = (title: string, categoryId: number, isLimitFormDisplayed: boolean, dates?:{year: number, month: number, day: number}) => {
     const newTodos = [...todos];
-    newTodos.push({
+    if(isLimitFormDisplayed){
+      newTodos.push({
       id: Date.now(),
       title: title,
       refCategoryId: categoryId,
       isCompleted: false,
-    });
+      isLimited: isLimitFormDisplayed,
+      limits: dates,
+      });
+    }
+    else{
+      newTodos.push({
+      id: Date.now(),
+      title: title,
+      refCategoryId: categoryId,
+      isCompleted: false,
+      isLimited: isLimitFormDisplayed,
+      });
+    }
+    
     updateTodos(newTodos);
   };
 
   //チェックボックスの入力時，stateに反映する。
   const handleTodoChecked = (id: number) => {
     const newTodos = todos.map((todo: Todo_item) => {
-      return {
+      if(todo.isLimited){
+        return {
         id: todo.id,
         title: todo.title,
         refCategoryId: todo.refCategoryId,
         isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
-      };
+        isLimited: todo.isLimited,
+        limits: todo.limits,
+        };
+      }else{
+        return {
+        id: todo.id,
+        title: todo.title,
+        refCategoryId: todo.refCategoryId,
+        isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
+        isLimited: todo.isLimited,
+        };
+      }
+      
     });
     updateTodos(newTodos);
   };

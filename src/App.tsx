@@ -76,7 +76,7 @@ const App = () => {
       />}
       <h1>
         Todos
-        <button onClick={handlePurgeClick}>Purge</button>
+        <button onClick={handlePurgeClick}>一括削除</button>
       </h1>
       <div className="categoryTabs">{CategoryTabs}</div>
       <ul id="todos">{TodoItems}</ul>

@@ -17,6 +17,23 @@ const Todo = (props: any) => {
     props.onCategoryChange(props.todo.id, Number(e.target.value));
   };
 
+  const limitDisplayHandling = () => {
+    if(props.todo.isLimited) {
+      return (
+        <>
+        <p>{props.todo.limits.year}</p>
+        </>
+      );
+    }else {
+      return (
+        <>
+        <p>期限未設定</p>
+        </>
+      );
+    }
+  };
+  
+
   return (
     <li>
       <label>
@@ -29,6 +46,7 @@ const Todo = (props: any) => {
         />
         <span>{props.todo.title}</span>
       </label>
+      {limitDisplayHandling()}
       <select value={String(categoryId)} onChange={handleCategoryChange}>
         <option value="0">未定義</option>
         <option value="1">{props.categories[1].name}</option>
@@ -40,7 +58,7 @@ const Todo = (props: any) => {
           props.onDeleteClick(props.todo.id);
         }}
       >
-        Del
+        削除
       </button>
     </li>
   );
