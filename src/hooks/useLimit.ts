@@ -14,7 +14,7 @@ const useLimit = (isLimited: boolean, limits: {
   const date = new Date();
   const [dates, setDates] = React.useState<Dates>({
     year: date.getFullYear(),
-    month: date.getMonth() + 1,
+    month: date.getMonth()+1,
     day: date.getDate(),
   });
 
@@ -127,13 +127,29 @@ const useLimit = (isLimited: boolean, limits: {
     }
   };
   
+  //日付が正確かどうか確認する関数
+  //仕様書と異なる実装であるが、getTImeの仕様がなんか違うので致し方ない
   const checkUsableDates = (year: number, month: number, day: number) => {
       const yyyy = ('0000' + String(year)).slice(-4);
       const MM = ('00' + String(month)).slice(-2);
       const dd = ('00' + String(day)).slice(-2);
       const checkDates = new Date(yyyy + '-' + MM + '-' + dd);
       console.log(checkDates.getDate());
-      return isNaN(checkDates.getTime());
+
+      //末尾チェック
+      if(month !== 12){
+        const endDayInstance = new Date(year, month, 0);
+        const thisMonthEndday = endDayInstance.getDate();
+        console.log(thisMonthEndday);
+
+        // 該当付きの末尾より、日付が大きかった(例:4月は30日までしかないのに、
+        // 31日が指定されてた場合)
+        if(day > thisMonthEndday){
+          return true;
+        }
+      }
+
+      return (isNaN(checkDates.getDate()) || year === 0);
     };
 
   return {

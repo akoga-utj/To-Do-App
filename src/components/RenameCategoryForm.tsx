@@ -2,6 +2,11 @@ import "../style.css";
 import React from "react";
 
 const RenameCategoryForm = (props: any) => {
+  if (props.nameChangeCategoryId === null) {
+    setTimeout(() => {
+      return null;
+    }, 500);
+  }
   const oldCategoryName: string =
     props.categories[props.nameChangeCategoryId].name;
   const [newCategoryName, setNewCategoryName] = React.useState<string | null>(oldCategoryName);
@@ -12,7 +17,7 @@ const RenameCategoryForm = (props: any) => {
   return (
     <>
       <div className="modal">
-        <div className="modal-msgspace">
+        <div className={`modal-msgspace ${props.isOpen ? "open" : ""}`}>
           新しいカテゴリー名を入力してください
           <input
             type="text"

@@ -27,6 +27,29 @@ const useCategories = () => {
 
   const timerRef = React.useRef<number | null>(null);
 
+  //アニメーション管理のため、UIに紐づくstateをこっちで扱う
+  const [isRenameModalVisible, setRenameModalVisible] = React.useState(false);
+  const [isRenameModalAnimate, setRenameModalAnimate] = React.useState(false);
+
+  //紐づいている処理が広範となっているため、UI遷移用の一時IDstateを用意する
+  const [tempId, setTempId] = React.useState<number|null>(null);
+
+  React.useEffect(() => {
+    if(tempId === null){
+      setRenameModalAnimate(false);
+      setTimeout(() => {
+        setRenameModalVisible(false);
+        setNameChangeCategoryId(null);
+      }, 600)
+    }else{
+      setNameChangeCategoryId(tempId);
+      setRenameModalVisible(true);
+      setTimeout(() => {
+        setRenameModalAnimate(true);
+      }, 10)
+    }
+  }, [tempId])
+
   //表示カテゴリー変更時の処理
   const handleCategorySelected = (id: number) => {
     //alert(id);
@@ -36,7 +59,7 @@ const useCategories = () => {
   const handleLongPress = (id: number) => {
     if(id !== 0){
     timerRef.current = setTimeout(() => {
-        setNameChangeCategoryId(id); 
+        setTempId(id);
       }, 500);
     }
   };
@@ -50,7 +73,7 @@ const useCategories = () => {
   const renameCategory = (newName: string, id: number) => {
     //id=0で呼び出されたときは何もせずウィンドウを閉じる(id=0はAll用だが、Allを対象にこの関数が呼ばれることはないため)
     if(id === 0) {
-      setNameChangeCategoryId(null);
+      setTempId(null);
       return;
     }
 
@@ -83,7 +106,7 @@ const useCategories = () => {
     
     setCategories(newCategories);
     localStorage.setItem("categories", JSON.stringify(newCategories));
-    setNameChangeCategoryId(null);
+    setTempId(null);
   }
 
   return {
@@ -94,6 +117,8 @@ const useCategories = () => {
     renameCategory,
     handleLongPress,
     timerStop,
+    isRenameModalAnimate,
+    isRenameModalVisible,
   };
 };
 

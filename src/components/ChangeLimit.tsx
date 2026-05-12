@@ -3,6 +3,12 @@ import useLimit from "../hooks/useLimit";
 import LimitForms from "./LimitForms";
 
 const ChangeLimit = (props: any) => {
+  if(props.limitChangeItemId === null) {
+    setTimeout(() => {
+      return null;
+    }, 500);
+  }
+
   const targetItem = props.todos.filter((todo: any) => {
     return todo.id === props.limitChangeItemId
   });
@@ -18,7 +24,7 @@ const ChangeLimit = (props: any) => {
   return (
     <>
       <div className="modal">
-        <div className="modal-msgspace">
+        <div className={`modal-msgspace ${props.isOpen ? "open": ""}  `}>
           新しいカテゴリー名を入力してください
           <LimitForms 
           year={dates.year}

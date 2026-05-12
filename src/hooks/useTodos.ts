@@ -37,6 +37,29 @@ const useTodos = () => {
     setTodos(parseTodos);
   }, []);
 
+  //アニメーション管理のため、UIに紐づくstateをこっちで扱う
+  const [isLimitModalVisible, setLimitModalVisible] = React.useState(false);
+  const [isLimitModalAnimate, setLimitModalAnimate] = React.useState(false);
+  
+  //紐づいている処理が広範となっているため、UI遷移用の一時IDstateを用意する
+    const [tempId, setTempId] = React.useState<number|null>(null);
+  
+    React.useEffect(() => {
+      if(tempId === null){
+        setLimitModalAnimate(false);
+        setTimeout(() => {
+          setLimitModalVisible(false);
+          setLimitChangeItemId(null);
+        }, 600)
+      }else{
+        setLimitChangeItemId(tempId);
+        setLimitModalVisible(true);
+        setTimeout(() => {
+          setLimitModalAnimate(true);
+        }, 10)
+      }
+    }, [tempId])
+
   //Todoリスト更新時の共通処理
   const updateTodos = (newTodos: Todo_item[]) => {
     setTodos(newTodos);
@@ -72,7 +95,7 @@ const useTodos = () => {
     newLimits: {year: number, month: number, day: number}
   ) => {
     if(itemId === null){
-      setLimitChangeItemId(null);
+      setTempId(null);
       return;
     }
 
@@ -97,7 +120,7 @@ const useTodos = () => {
       }
     });
     updateTodos(newTodos);
-    setLimitChangeItemId(null);
+    setTempId(null);
   }
 
   //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
@@ -172,7 +195,7 @@ const useTodos = () => {
 
   //期限変更アイコンがクリックされた際, 期限変更ウィンドウ呼び出しのためのstate制御
   const handleDispChangeLimit = (itemId: number) => {
-    setLimitChangeItemId(itemId)
+    setTempId(itemId)
   }
 
   return {
@@ -185,6 +208,8 @@ const useTodos = () => {
     handleTodoDeleteClick,
     handleLimitsChanged,
     handleDispChangeLimit,
+    isLimitModalAnimate,
+    isLimitModalVisible
   };
 };
 

@@ -31,6 +31,8 @@ const App = () => {
     handleTodoDeleteClick,
     handleLimitsChanged,
     handleDispChangeLimit,
+    isLimitModalAnimate,
+    isLimitModalVisible,
   } = useTodos();
 
   const { 
@@ -41,6 +43,8 @@ const App = () => {
     renameCategory, 
     handleLongPress,
     timerStop,
+    isRenameModalAnimate,
+    isRenameModalVisible,
   } = useCategories();
 
   //Todoアイテム要素をカテゴリー判断して描写
@@ -80,17 +84,19 @@ const App = () => {
 
   return (
     <div className="container">
-      {nameChangeCategoryId !== null && 
+      {isRenameModalVisible && 
       <RenameCategoryForm 
       nameChangeCategoryId = {nameChangeCategoryId} 
       categories = {categories} 
       onSubmit = {renameCategory}
+      isOpen={isRenameModalAnimate}
       />}
-      {limitChangeItemId !== null && 
+      {isLimitModalVisible && 
       <ChangeLimit 
         todos = {todos}
         limitChangeItemId = {limitChangeItemId}
         onSubmit = {handleLimitsChanged}
+        isOpen={isLimitModalAnimate}
       />}
       <h1>
         Todos

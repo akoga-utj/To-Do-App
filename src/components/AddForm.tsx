@@ -47,7 +47,6 @@ const AddForm = (props: any) => {
     else {
       props.onSubmit(title, categoryId, isLimitFormDisplayed, null);
     }
-    props.onSubmit(title, categoryId, isLimitFormDisplayed, dates);
     setTitle("");
     inputRef.current!.focus();
   };
