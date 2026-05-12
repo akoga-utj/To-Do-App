@@ -8,18 +8,20 @@ const useTodos = () => {
     refCategoryId: number;
     isCompleted: boolean;
     isLimited: boolean;
-    limits?: {
+    limits: {
       year: number;
       month: number;
       day: number;
-    }
+    }|null,
   };
 
   //例外的に日付バリデーションチェックのみuseLimitから持ってくる(どのデータ構造に対応しているかわかりやすくするため)
-  const { checkUsableDates } = useLimit();
+  const { checkUsableDates } = useLimit(false, null);
 
   const [todos, setTodos] = React.useState<Todo_item[]>([
   ]);
+
+  const [limitChangeItemId, setLimitChangeItemId] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     let parseTodos: Todo_item[];
@@ -48,25 +50,14 @@ const useTodos = () => {
   ) => {
     const newTodos = todos.map((todo: Todo_item) => {
       if (todo.id === ItemId) {
-        if(todo.isLimited){
-          return {
+        return {
           id: todo.id,
           title: todo.title,
           refCategoryId: newRefCategoryId,
           isCompleted: todo.isCompleted,
           isLimited: todo.isLimited,
           limits: todo.limits,
-          };
-        }
-        else{
-          return {
-          id: todo.id,
-          title: todo.title,
-          refCategoryId: newRefCategoryId,
-          isCompleted: todo.isCompleted,
-          isLimited: todo.isLimited,
-          };
-        }
+        };
         
       } else {
         return todo;
@@ -74,6 +65,40 @@ const useTodos = () => {
     });
     updateTodos(newTodos);
   };
+
+  //期限変更モーダルウィンドウから帰ってくるときに実行される関数
+  const handleLimitsChanged = (
+    itemId: number|null,
+    newLimits: {year: number, month: number, day: number}
+  ) => {
+    if(itemId === null){
+      setLimitChangeItemId(null);
+      return;
+    }
+
+    if(checkUsableDates(newLimits!.year, newLimits!.month, newLimits!.day)){
+        alert("設定できない日付です");
+        return;
+    }
+
+    const newTodos = todos.map((todo: Todo_item) => {
+      if (todo.id === itemId) {
+        return {
+          id: todo.id,
+          title: todo.title,
+          refCategoryId: todo.refCategoryId,
+          isCompleted: todo.isCompleted,
+          isLimited: true,
+          limits: newLimits,
+          };
+        
+      } else {
+        return todo;
+      }
+    });
+    updateTodos(newTodos);
+    setLimitChangeItemId(null);
+  }
 
   //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
   const handlePurgeClick = () => {
@@ -87,7 +112,7 @@ const useTodos = () => {
   };
 
   //フォームの内容を受け取り、Todoリストに追加する。
-  const handleAddFormSubmit = (title: string, categoryId: number, isLimitFormDisplayed: boolean, dates?:{year: number, month: number, day: number}) => {
+  const handleAddFormSubmit = (title: string, categoryId: number, isLimitFormDisplayed: boolean, dates:{year: number, month: number, day: number} | null) => {
     const newTodos = [...todos];
     if(isLimitFormDisplayed){
       if(checkUsableDates(dates!.year, dates!.month, dates!.day)){
@@ -111,6 +136,7 @@ const useTodos = () => {
       refCategoryId: categoryId,
       isCompleted: false,
       isLimited: isLimitFormDisplayed,
+      limits: null,
       });
     }
     
@@ -120,8 +146,7 @@ const useTodos = () => {
   //チェックボックスの入力時，stateに反映する。
   const handleTodoChecked = (id: number) => {
     const newTodos = todos.map((todo: Todo_item) => {
-      if(todo.isLimited){
-        return {
+      return {
         id: todo.id,
         title: todo.title,
         refCategoryId: todo.refCategoryId,
@@ -129,15 +154,6 @@ const useTodos = () => {
         isLimited: todo.isLimited,
         limits: todo.limits,
         };
-      }else{
-        return {
-        id: todo.id,
-        title: todo.title,
-        refCategoryId: todo.refCategoryId,
-        isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
-        isLimited: todo.isLimited,
-        };
-      }
       
     });
     updateTodos(newTodos);
@@ -154,13 +170,21 @@ const useTodos = () => {
     updateTodos(newTodos);
   };
 
+  //期限変更アイコンがクリックされた際, 期限変更ウィンドウ呼び出しのためのstate制御
+  const handleDispChangeLimit = (itemId: number) => {
+    setLimitChangeItemId(itemId)
+  }
+
   return {
     todos,
+    limitChangeItemId,
     handleRefCategoryChanged,
     handlePurgeClick,
     handleAddFormSubmit,
     handleTodoChecked,
     handleTodoDeleteClick,
+    handleLimitsChanged,
+    handleDispChangeLimit,
   };
 };
 

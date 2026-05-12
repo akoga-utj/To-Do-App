@@ -14,7 +14,6 @@ const LimitForms = (props: any) => {
 
   return (
     <>
-    <p>日付を選択してください</p>
     <div className="limit-forms">
     <div className="limit-form">
       <img src="../../img/keyboard_arrow_up.png" onClick={() => {isNonZero(props.year) && props.handleArrowChange("up", "year")}} />

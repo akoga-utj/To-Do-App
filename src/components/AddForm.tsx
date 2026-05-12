@@ -29,7 +29,7 @@ const AddForm = (props: any) => {
     handleMonthChange,
     handleDayChange,
     handleArrowChange,
-  } = useLimit();
+  } = useLimit(false, null);
 
   //画面に表示しているカテゴリーが変更されたとき、カテゴリー指定の初期値を追従
   React.useEffect(() => {
@@ -45,7 +45,7 @@ const AddForm = (props: any) => {
       props.onSubmit(title, categoryId, isLimitFormDisplayed, dates);
     }
     else {
-      props.onSubmit(title, categoryId, isLimitFormDisplayed);
+      props.onSubmit(title, categoryId, isLimitFormDisplayed, null);
     }
     props.onSubmit(title, categoryId, isLimitFormDisplayed, dates);
     setTitle("");
@@ -56,12 +56,6 @@ const AddForm = (props: any) => {
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategoryId(Number(e.target.value));
   };
-
-  //期限設定チェックボックスの内容を反映
-  const handleLimitFormDisplayed = () => {
-    setLimitFormDisplayed(!isLimitFormDisplayed);
-  }
-
 
   return (
     <>
@@ -78,7 +72,7 @@ const AddForm = (props: any) => {
       <input
       type="checkbox"
       checked={isLimitFormDisplayed}
-      onChange={handleLimitFormDisplayed}
+      onChange={() => {setLimitFormDisplayed(!isLimitFormDisplayed)}}
       />
       <p>期限を設定する</p>
       <p>カテゴリーを選択してください</p>
@@ -89,7 +83,10 @@ const AddForm = (props: any) => {
         <option value="3">{props.categories[3].name}</option>
       </select>
       </div>
-      {isLimitFormDisplayed && <LimitForms 
+      {isLimitFormDisplayed && 
+      <>
+      <p>日付を選択してください</p>
+      <LimitForms 
         year={dates.year}
         month={dates.month}
         day={dates.day}
@@ -97,7 +94,8 @@ const AddForm = (props: any) => {
         handleMonthChange={handleMonthChange}
         handleDayChange={handleDayChange}
         handleArrowChange={handleArrowChange}
-        />}
+        />
+        </>}
     </>
   );
 };

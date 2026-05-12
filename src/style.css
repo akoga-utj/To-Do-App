@@ -50,7 +50,6 @@ li {
   /* justify-content: space-between; */
   align-items: flex-start;
   margin-top: 16px;
-  background-color: gray;
 }
 
 li input:checked + span {
@@ -64,7 +63,6 @@ li input {
 
 li label {
   min-width: 0;
-  background-color: #3333ff;
   /*折り返し抑制のために設定 各部品の幅はブラウザ依存のものが多いため、余裕を持たせてこの数値とする。
     最終的な数値はflex:autoで決めてくれるので大丈夫*/
   width: 300px;
@@ -189,7 +187,6 @@ form input {
 }
 
 .date-place {
-  background-color: red;
   margin: 0 8px;
   padding: 0;
   width: 90px;

@@ -1,6 +1,10 @@
 import React from "react";
 
-const useLimit = () => {
+const useLimit = (isLimited: boolean, limits: {
+    year: number,
+    month: number,
+    day: number,
+  } | null) => {
   type Dates = {
     year: number,
     month: number,
@@ -13,6 +17,17 @@ const useLimit = () => {
     month: date.getMonth() + 1,
     day: date.getDate(),
   });
+
+  React.useEffect(() => {
+    if(isLimited) {
+      const newDates: Dates = {
+        year: limits!.year,
+        month: limits!.month,
+        day: limits!.day,
+      };
+      setDates(newDates)
+    }
+  }, []);
 
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue:number;

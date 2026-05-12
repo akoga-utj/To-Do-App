@@ -3,6 +3,7 @@ import Todo from "./components/Todo.tsx";
 import AddForm from "./components/AddForm.tsx";
 import CategoryTab from "./components/CategoryTab.tsx";
 import RenameCategoryForm from "./components/RenameCategoryForm.tsx";
+import ChangeLimit from "./components/ChangeLimit.tsx";
 import useTodos from "./hooks/useTodos.ts";
 import useCategories from "./hooks/useCategories.ts";
 
@@ -12,15 +13,24 @@ const App = () => {
     title: string;
     refCategoryId: number;
     isCompleted: boolean;
+    isLimited: boolean;
+    limits: {
+      year: number;
+      month: number;
+      day: number;
+    } | null;
   };
 
   const {
     todos,
+    limitChangeItemId,
     handleRefCategoryChanged,
     handlePurgeClick,
     handleAddFormSubmit,
     handleTodoChecked,
     handleTodoDeleteClick,
+    handleLimitsChanged,
+    handleDispChangeLimit,
   } = useTodos();
 
   const { 
@@ -47,6 +57,8 @@ const App = () => {
           onCategoryChange={handleRefCategoryChanged}
           onDeleteClick={handleTodoDeleteClick}
           onCheckboxChange={handleTodoChecked}
+          onLimitsChange={handleLimitsChanged}
+          onIconClick={handleDispChangeLimit}
         />
       );
     }
@@ -73,6 +85,12 @@ const App = () => {
       nameChangeCategoryId = {nameChangeCategoryId} 
       categories = {categories} 
       onSubmit = {renameCategory}
+      />}
+      {limitChangeItemId !== null && 
+      <ChangeLimit 
+        todos = {todos}
+        limitChangeItemId = {limitChangeItemId}
+        onSubmit = {handleLimitsChanged}
       />}
       <h1>
         Todos
