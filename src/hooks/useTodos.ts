@@ -1,4 +1,5 @@
 import React from "react";
+import useLimit from "./useLimit"
 
 const useTodos = () => {
   type Todo_item = {
@@ -13,6 +14,9 @@ const useTodos = () => {
       day: number;
     }
   };
+
+  //例外的に日付バリデーションチェックのみuseLimitから持ってくる(どのデータ構造に対応しているかわかりやすくするため)
+  const { checkUsableDates } = useLimit();
 
   const [todos, setTodos] = React.useState<Todo_item[]>([
   ]);
@@ -86,6 +90,11 @@ const useTodos = () => {
   const handleAddFormSubmit = (title: string, categoryId: number, isLimitFormDisplayed: boolean, dates?:{year: number, month: number, day: number}) => {
     const newTodos = [...todos];
     if(isLimitFormDisplayed){
+      if(checkUsableDates(dates!.year, dates!.month, dates!.day)){
+        alert("設定できない日付です");
+        return;
+      }
+      
       newTodos.push({
       id: Date.now(),
       title: title,

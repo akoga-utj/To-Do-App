@@ -18,19 +18,18 @@ const Todo = (props: any) => {
   };
 
   const limitDisplayHandling = () => {
+    let date = "";
     if(props.todo.isLimited) {
-      return (
-        <>
-        <p>{props.todo.limits.year}</p>
-        </>
-      );
-    }else {
-      return (
-        <>
-        <p>期限未設定</p>
-        </>
-      );
+      const yyyy = ('0000' + String(props.todo.limits.year)).slice(-4);
+      const MM = ('00' + String(props.todo.limits.month)).slice(-2);
+      const dd = ('00' + String(props.todo.limits.year)).slice(-2);
+      date = yyyy + "/" + MM + "/" + dd;
     }
+    return (
+      <div className="date-place">
+        {date}
+      </div>
+    );
   };
   
 
@@ -47,6 +46,7 @@ const Todo = (props: any) => {
         <span>{props.todo.title}</span>
       </label>
       {limitDisplayHandling()}
+      <img src="../../img/edit_calendar_icon.png" />
       <select value={String(categoryId)} onChange={handleCategoryChange}>
         <option value="0">未定義</option>
         <option value="1">{props.categories[1].name}</option>

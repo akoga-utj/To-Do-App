@@ -10,7 +10,7 @@ const useLimit = () => {
   const date = new Date();
   const [dates, setDates] = React.useState<Dates>({
     year: date.getFullYear(),
-    month: date.getMonth(),
+    month: date.getMonth() + 1,
     day: date.getDate(),
   });
 
@@ -111,6 +111,15 @@ const useLimit = () => {
         break;
     }
   };
+  
+  const checkUsableDates = (year: number, month: number, day: number) => {
+      const yyyy = ('0000' + String(year)).slice(-4);
+      const MM = ('00' + String(month)).slice(-2);
+      const dd = ('00' + String(day)).slice(-2);
+      const checkDates = new Date(yyyy + '-' + MM + '-' + dd);
+      console.log(checkDates.getDate());
+      return isNaN(checkDates.getTime());
+    };
 
   return {
     dates,
@@ -118,6 +127,7 @@ const useLimit = () => {
     handleMonthChange,
     handleDayChange,
     handleArrowChange,
+    checkUsableDates,
   };
 };
 
