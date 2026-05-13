@@ -2,9 +2,9 @@ import React from "react";
 
 const useCategories = () => {
   type Category_data = {
-    id: number,
-    name: string,
-  }
+    id: number;
+    name: string;
+  };
 
   const [categories, setCategories] = React.useState<Category_data[]>([
     { id: 0, name: "All" },
@@ -18,10 +18,12 @@ const useCategories = () => {
 
     if (saved !== null) {
       setCategories(JSON.parse(saved));
-    };
-  }, [])
+    }
+  }, []);
 
-  const [nameChangeCategoryId, setNameChangeCategoryId] = React.useState<number|null>(null);
+  const [nameChangeCategoryId, setNameChangeCategoryId] = React.useState<
+    number | null
+  >(null);
 
   const [nowSelectedCategoryId, setSelectedCategoryId] = React.useState(0);
 
@@ -32,23 +34,23 @@ const useCategories = () => {
   const [isRenameModalAnimate, setRenameModalAnimate] = React.useState(false);
 
   //紐づいている処理が広範となっているため、UI遷移用の一時IDstateを用意する
-  const [tempId, setTempId] = React.useState<number|null>(null);
+  const [tempId, setTempId] = React.useState<number | null>(null);
 
   React.useEffect(() => {
-    if(tempId === null){
+    if (tempId === null) {
       setRenameModalAnimate(false);
       setTimeout(() => {
         setRenameModalVisible(false);
         setNameChangeCategoryId(null);
-      }, 600)
-    }else{
+      }, 600);
+    } else {
       setNameChangeCategoryId(tempId);
       setRenameModalVisible(true);
       setTimeout(() => {
         setRenameModalAnimate(true);
-      }, 10)
+      }, 10);
     }
-  }, [tempId])
+  }, [tempId]);
 
   //表示カテゴリー変更時の処理
   const handleCategorySelected = (id: number) => {
@@ -57,8 +59,8 @@ const useCategories = () => {
   };
 
   const handleLongPress = (id: number) => {
-    if(id !== 0){
-    timerRef.current = setTimeout(() => {
+    if (id !== 0) {
+      timerRef.current = setTimeout(() => {
         setTempId(id);
       }, 500);
     }
@@ -72,13 +74,13 @@ const useCategories = () => {
 
   const renameCategory = (newName: string, id: number) => {
     //id=0で呼び出されたときは何もせずウィンドウを閉じる(id=0はAll用だが、Allを対象にこの関数が呼ばれることはないため)
-    if(id === 0) {
+    if (id === 0) {
       setTempId(null);
       return;
     }
 
     //新しいカテゴリー名がNULLだったらalertを出して更新拒否
-    if(newName === "") {
+    if (newName === "") {
       alert("カテゴリー名は空白にできません");
       return;
     }
@@ -93,21 +95,20 @@ const useCategories = () => {
     }
 
     const newCategories = categories.map((category) => {
-      if(category.id === id) {
+      if (category.id === id) {
         return {
           id: id,
           name: newName,
         };
-      } 
-      else {
+      } else {
         return category;
       }
     });
-    
+
     setCategories(newCategories);
     localStorage.setItem("categories", JSON.stringify(newCategories));
     setTempId(null);
-  }
+  };
 
   return {
     categories,

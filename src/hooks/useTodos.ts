@@ -1,5 +1,5 @@
 import React from "react";
-import useLimit from "./useLimit"
+import useLimit from "./useLimit";
 
 const useTodos = () => {
   type Todo_item = {
@@ -12,16 +12,17 @@ const useTodos = () => {
       year: number;
       month: number;
       day: number;
-    }|null,
+    } | null;
   };
 
   //例外的に日付バリデーションチェックのみuseLimitから持ってくる(どのデータ構造に対応しているかわかりやすくするため)
   const { checkUsableDates } = useLimit(false, null);
 
-  const [todos, setTodos] = React.useState<Todo_item[]>([
-  ]);
+  const [todos, setTodos] = React.useState<Todo_item[]>([]);
 
-  const [limitChangeItemId, setLimitChangeItemId] = React.useState<number | null>(null);
+  const [limitChangeItemId, setLimitChangeItemId] = React.useState<
+    number | null
+  >(null);
 
   React.useEffect(() => {
     let parseTodos: Todo_item[];
@@ -40,25 +41,25 @@ const useTodos = () => {
   //アニメーション管理のため、UIに紐づくstateをこっちで扱う
   const [isLimitModalVisible, setLimitModalVisible] = React.useState(false);
   const [isLimitModalAnimate, setLimitModalAnimate] = React.useState(false);
-  
+
   //紐づいている処理が広範となっているため、UI遷移用の一時IDstateを用意する
-    const [tempId, setTempId] = React.useState<number|null>(null);
-  
-    React.useEffect(() => {
-      if(tempId === null){
-        setLimitModalAnimate(false);
-        setTimeout(() => {
-          setLimitModalVisible(false);
-          setLimitChangeItemId(null);
-        }, 600)
-      }else{
-        setLimitChangeItemId(tempId);
-        setLimitModalVisible(true);
-        setTimeout(() => {
-          setLimitModalAnimate(true);
-        }, 10)
-      }
-    }, [tempId])
+  const [tempId, setTempId] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    if (tempId === null) {
+      setLimitModalAnimate(false);
+      setTimeout(() => {
+        setLimitModalVisible(false);
+        setLimitChangeItemId(null);
+      }, 600);
+    } else {
+      setLimitChangeItemId(tempId);
+      setLimitModalVisible(true);
+      setTimeout(() => {
+        setLimitModalAnimate(true);
+      }, 10);
+    }
+  }, [tempId]);
 
   //Todoリスト更新時の共通処理
   const updateTodos = (newTodos: Todo_item[]) => {
@@ -81,7 +82,6 @@ const useTodos = () => {
           isLimited: todo.isLimited,
           limits: todo.limits,
         };
-        
       } else {
         return todo;
       }
@@ -91,17 +91,17 @@ const useTodos = () => {
 
   //期限変更モーダルウィンドウから帰ってくるときに実行される関数
   const handleLimitsChanged = (
-    itemId: number|null,
-    newLimits: {year: number, month: number, day: number}
+    itemId: number | null,
+    newLimits: { year: number; month: number; day: number },
   ) => {
-    if(itemId === null){
+    if (itemId === null) {
       setTempId(null);
       return;
     }
 
-    if(checkUsableDates(newLimits!.year, newLimits!.month, newLimits!.day)){
-        alert("設定できない日付です");
-        return;
+    if (checkUsableDates(newLimits!.year, newLimits!.month, newLimits!.day)) {
+      alert("設定できない日付です");
+      return;
     }
 
     const newTodos = todos.map((todo: Todo_item) => {
@@ -113,15 +113,14 @@ const useTodos = () => {
           isCompleted: todo.isCompleted,
           isLimited: true,
           limits: newLimits,
-          };
-        
+        };
       } else {
         return todo;
       }
     });
     updateTodos(newTodos);
     setTempId(null);
-  }
+  };
 
   //Purgeボタンが押されたとき、チェックが付いているTodoアイテムをまとめて削除する。
   const handlePurgeClick = () => {
@@ -135,34 +134,38 @@ const useTodos = () => {
   };
 
   //フォームの内容を受け取り、Todoリストに追加する。
-  const handleAddFormSubmit = (title: string, categoryId: number, isLimitFormDisplayed: boolean, dates:{year: number, month: number, day: number} | null) => {
+  const handleAddFormSubmit = (
+    title: string,
+    categoryId: number,
+    isLimitFormDisplayed: boolean,
+    dates: { year: number; month: number; day: number } | null,
+  ) => {
     const newTodos = [...todos];
-    if(isLimitFormDisplayed){
-      if(checkUsableDates(dates!.year, dates!.month, dates!.day)){
+    if (isLimitFormDisplayed) {
+      if (checkUsableDates(dates!.year, dates!.month, dates!.day)) {
         alert("設定できない日付です");
         return;
       }
-      
+
       newTodos.push({
-      id: Date.now(),
-      title: title,
-      refCategoryId: categoryId,
-      isCompleted: false,
-      isLimited: isLimitFormDisplayed,
-      limits: dates,
+        id: Date.now(),
+        title: title,
+        refCategoryId: categoryId,
+        isCompleted: false,
+        isLimited: isLimitFormDisplayed,
+        limits: dates,
+      });
+    } else {
+      newTodos.push({
+        id: Date.now(),
+        title: title,
+        refCategoryId: categoryId,
+        isCompleted: false,
+        isLimited: isLimitFormDisplayed,
+        limits: null,
       });
     }
-    else{
-      newTodos.push({
-      id: Date.now(),
-      title: title,
-      refCategoryId: categoryId,
-      isCompleted: false,
-      isLimited: isLimitFormDisplayed,
-      limits: null,
-      });
-    }
-    
+
     updateTodos(newTodos);
   };
 
@@ -176,8 +179,7 @@ const useTodos = () => {
         isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
         isLimited: todo.isLimited,
         limits: todo.limits,
-        };
-      
+      };
     });
     updateTodos(newTodos);
   };
@@ -195,8 +197,8 @@ const useTodos = () => {
 
   //期限変更アイコンがクリックされた際, 期限変更ウィンドウ呼び出しのためのstate制御
   const handleDispChangeLimit = (itemId: number) => {
-    setTempId(itemId)
-  }
+    setTempId(itemId);
+  };
 
   return {
     todos,
@@ -209,7 +211,7 @@ const useTodos = () => {
     handleLimitsChanged,
     handleDispChangeLimit,
     isLimitModalAnimate,
-    isLimitModalVisible
+    isLimitModalVisible,
   };
 };
 

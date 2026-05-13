@@ -35,12 +35,12 @@ const App = () => {
     isLimitModalVisible,
   } = useTodos();
 
-  const { 
-    categories, 
-    nowSelectedCategoryId, 
-    nameChangeCategoryId, 
-    handleCategorySelected, 
-    renameCategory, 
+  const {
+    categories,
+    nowSelectedCategoryId,
+    nameChangeCategoryId,
+    handleCategorySelected,
+    renameCategory,
     handleLongPress,
     timerStop,
     isRenameModalAnimate,
@@ -76,28 +76,30 @@ const App = () => {
         category={category}
         onTabChange={handleCategorySelected}
         nowSelectedCategoryId={nowSelectedCategoryId}
-        handleLongPress = {handleLongPress}
-        timerStop = {timerStop}
+        handleLongPress={handleLongPress}
+        timerStop={timerStop}
       />
     );
   });
 
   return (
     <div className="container">
-      {isRenameModalVisible && 
-      <RenameCategoryForm 
-      nameChangeCategoryId = {nameChangeCategoryId} 
-      categories = {categories} 
-      onSubmit = {renameCategory}
-      isOpen={isRenameModalAnimate}
-      />}
-      {isLimitModalVisible && 
-      <ChangeLimit 
-        todos = {todos}
-        limitChangeItemId = {limitChangeItemId}
-        onSubmit = {handleLimitsChanged}
-        isOpen={isLimitModalAnimate}
-      />}
+      {isRenameModalVisible && (
+        <RenameCategoryForm
+          nameChangeCategoryId={nameChangeCategoryId}
+          categories={categories}
+          onSubmit={renameCategory}
+          isOpen={isRenameModalAnimate}
+        />
+      )}
+      {isLimitModalVisible && (
+        <ChangeLimit
+          todos={todos}
+          limitChangeItemId={limitChangeItemId}
+          onSubmit={handleLimitsChanged}
+          isOpen={isLimitModalAnimate}
+        />
+      )}
       <h1>
         Todos
         <button onClick={handlePurgeClick}>一括削除</button>

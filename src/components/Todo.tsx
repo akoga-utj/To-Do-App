@@ -20,17 +20,13 @@ const Todo = (props: any) => {
   //Todoアイテムに期限を表示するかを制御
   const handleLimitDisplayed = () => {
     let date = "";
-    if(props.todo.isLimited) {
-      const yyyy = ('0000' + String(props.todo.limits.year)).slice(-4);
-      const MM = ('00' + String(props.todo.limits.month)).slice(-2);
-      const dd = ('00' + String(props.todo.limits.day)).slice(-2);
+    if (props.todo.isLimited) {
+      const yyyy = ("0000" + String(props.todo.limits.year)).slice(-4);
+      const MM = ("00" + String(props.todo.limits.month)).slice(-2);
+      const dd = ("00" + String(props.todo.limits.day)).slice(-2);
       date = yyyy + "/" + MM + "/" + dd;
     }
-    return (
-      <div className="date-place">
-        {date}
-      </div>
-    );
+    return <div className="date-place">{date}</div>;
   };
 
   return (
@@ -46,7 +42,12 @@ const Todo = (props: any) => {
         <span>{props.todo.title}</span>
       </label>
       {handleLimitDisplayed()}
-      <img src="../../img/edit_calendar_icon.png" onClick={() => {props.onIconClick(props.todo.id)}}/>
+      <img
+        src="../../img/edit_calendar_icon.png"
+        onClick={() => {
+          props.onIconClick(props.todo.id);
+        }}
+      />
       <select value={String(categoryId)} onChange={handleCategoryChange}>
         <option value="0">未定義</option>
         <option value="1">{props.categories[1].name}</option>

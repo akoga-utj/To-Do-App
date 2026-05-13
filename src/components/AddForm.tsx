@@ -1,7 +1,7 @@
 import React from "react";
 import "../style.css";
 import LimitForms from "./LimitForms";
-import useLimit from "../hooks/useLimit"
+import useLimit from "../hooks/useLimit";
 
 const AddForm = (props: any) => {
   //新しく追加するアイテムのタスク名
@@ -13,7 +13,8 @@ const AddForm = (props: any) => {
   );
 
   //期限設定フォームの表示/非表示
-  const [isLimitFormDisplayed, setLimitFormDisplayed] = React.useState<boolean>(false);
+  const [isLimitFormDisplayed, setLimitFormDisplayed] =
+    React.useState<boolean>(false);
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -41,10 +42,9 @@ const AddForm = (props: any) => {
     //htmlのイベントリスター同様、ブラウザ制御のための引数が用意されている。
     console.log(dates);
     e.preventDefault();
-    if(isLimitFormDisplayed){
+    if (isLimitFormDisplayed) {
       props.onSubmit(title, categoryId, isLimitFormDisplayed, dates);
-    }
-    else {
+    } else {
       props.onSubmit(title, categoryId, isLimitFormDisplayed, null);
     }
     setTitle("");
@@ -68,33 +68,36 @@ const AddForm = (props: any) => {
         <button>追加</button>
       </form>
       <div className="add-item-options">
-      <input
-      type="checkbox"
-      checked={isLimitFormDisplayed}
-      onChange={() => {setLimitFormDisplayed(!isLimitFormDisplayed)}}
-      />
-      <p>期限を設定する</p>
-      <p>カテゴリーを選択してください</p>
-      <select value={String(categoryId)} onChange={handleCategoryChange}>
-        <option value="0">未定義</option>
-        <option value="1">{props.categories[1].name}</option>
-        <option value="2">{props.categories[2].name}</option>
-        <option value="3">{props.categories[3].name}</option>
-      </select>
-      </div>
-      {isLimitFormDisplayed && 
-      <>
-      <p>日付を選択してください</p>
-      <LimitForms 
-        year={dates.year}
-        month={dates.month}
-        day={dates.day}
-        handleYearChange={handleYearChange}
-        handleMonthChange={handleMonthChange}
-        handleDayChange={handleDayChange}
-        handleArrowChange={handleArrowChange}
+        <input
+          type="checkbox"
+          checked={isLimitFormDisplayed}
+          onChange={() => {
+            setLimitFormDisplayed(!isLimitFormDisplayed);
+          }}
         />
-        </>}
+        <p>期限を設定する</p>
+        <p>カテゴリーを選択してください</p>
+        <select value={String(categoryId)} onChange={handleCategoryChange}>
+          <option value="0">未定義</option>
+          <option value="1">{props.categories[1].name}</option>
+          <option value="2">{props.categories[2].name}</option>
+          <option value="3">{props.categories[3].name}</option>
+        </select>
+      </div>
+      {isLimitFormDisplayed && (
+        <>
+          <p>日付を選択してください</p>
+          <LimitForms
+            year={dates.year}
+            month={dates.month}
+            day={dates.day}
+            handleYearChange={handleYearChange}
+            handleMonthChange={handleMonthChange}
+            handleDayChange={handleDayChange}
+            handleArrowChange={handleArrowChange}
+          />
+        </>
+      )}
     </>
   );
 };

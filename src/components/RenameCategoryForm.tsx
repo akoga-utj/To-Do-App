@@ -9,7 +9,9 @@ const RenameCategoryForm = (props: any) => {
   }
   const oldCategoryName: string =
     props.categories[props.nameChangeCategoryId].name;
-  const [newCategoryName, setNewCategoryName] = React.useState<string | null>(oldCategoryName);
+  const [newCategoryName, setNewCategoryName] = React.useState<string | null>(
+    oldCategoryName,
+  );
 
   const handleFormContent = (e: React.ChangeEvent<HTMLInputElement | null>) => {
     setNewCategoryName(e.currentTarget.value);
@@ -25,20 +27,22 @@ const RenameCategoryForm = (props: any) => {
             onChange={handleFormContent}
           ></input>
           <div className="form-button-place">
-          <button id="cancel"
-            onClick={() => {
-              props.onSubmit("", 0);
-            }}
-          >
-            キャンセル
-          </button>
-          <button id="save"
-            onClick={() => {
-              props.onSubmit(newCategoryName, props.nameChangeCategoryId);
-            }}
-          >
-            保存
-          </button>
+            <button
+              id="cancel"
+              onClick={() => {
+                props.onSubmit("", 0);
+              }}
+            >
+              キャンセル
+            </button>
+            <button
+              id="save"
+              onClick={() => {
+                props.onSubmit(newCategoryName, props.nameChangeCategoryId);
+              }}
+            >
+              保存
+            </button>
           </div>
         </div>
       </div>
