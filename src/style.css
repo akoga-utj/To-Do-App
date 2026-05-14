@@ -237,3 +237,7 @@ form input {
 .disp-task-change-place input {
   width: auto;
 }
+
+.other-disp-period-day {
+  background-color: #ccc;
+}

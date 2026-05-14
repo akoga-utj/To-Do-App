@@ -57,6 +57,8 @@ const App = () => {
     handleDispPeriodChange,
     dispCategory,
     handleDispCategoryChange,
+    calendarRefs,
+    holidays,
   } = useCalendar();
 
   //Todoアイテム要素をカテゴリー判断して描写
@@ -121,6 +123,8 @@ const App = () => {
           categories={categories}
           dispCategory={dispCategory}
           onCheckboxChange={handleDispCategoryChange}
+          calendarRefs={calendarRefs}
+          holidays={holidays}
         />
       )}
       <h1>

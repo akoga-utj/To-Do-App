@@ -1,4 +1,41 @@
 const Calendar = (props: any) => {
+
+  const renderTable = () => {
+    let rows = [];
+    let prevDay = 1;
+    let nextMonthDay = 1;
+    let beforeMonthDay = props.calendarRefs.lastDate - props.calendarRefs.firstDay + 1;
+    console.log(props.calendarRefs);
+    
+    for(let i = 0; i < props.calendarRefs.weeks; i ++){
+      let cols = [];
+      for(let j = 0; j < 7; j ++){
+        if(i === 0 && j < props.calendarRefs.firstDay) {
+          cols.push(
+            <td key={i*7+j} className="other-disp-period-day">{beforeMonthDay}</td>
+          )
+          beforeMonthDay ++;
+        }
+        else if(prevDay > props.calendarRefs.lastDate){
+          cols.push(
+            <td key={i*7+j} className="other-disp-period-day">{nextMonthDay}</td>
+          );
+          nextMonthDay ++;
+        } 
+        else {
+          cols.push(
+            <td key={i*7+j}>{prevDay}</td>
+          );
+          prevDay ++;
+        }
+      }
+      rows.push(
+        <tr key={`row_${i}`}>{cols}</tr>
+      );
+    }
+    return rows;
+  }
+
   return (
     <>
       <div className="modal">
@@ -18,6 +55,12 @@ const Calendar = (props: any) => {
             <label>
             <input type="checkbox" checked={props.dispCategory[3].disp} onChange={() => {props.onCheckboxChange(3)}} style={{accentColor: "#ffffe0"}} />{props.categories[3].name}</label>
           </div>
+          <table>
+            <thead></thead>
+            <tbody>
+            {renderTable()}
+            </tbody>
+          </table>
           <div style={{display:"flex", flex: 1, justifyContent: "flex-end"}}>
             <button
               onClick={() => {
