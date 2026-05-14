@@ -31,13 +31,14 @@ body {
 
 h1 {
   margin: 0;
-  font-size: 20px;
   border-bottom: 1px solid #ccc;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0 8px;
   padding-bottom: 8px;
 }
+
+
 
 ul {
   margin: 0;
@@ -117,10 +118,19 @@ form input {
   z-index: 1;
 }
 
+.header-title {
+  font-size: 20px;
+  flex: 1;
+}
+
 .modal-msgspace.open {
   transform: translateY(0px);
   opacity: 1;
   z-index: 1;
+}
+
+.modal-msgspace.calendar {
+  text-align: center;
 }
 
 .modal-msgspace input {
@@ -133,6 +143,7 @@ form input {
 
 .form-button-place {
   display: flex;
+  flex: 1;
   box-sizing: border-box;
   justify-content: flex-end;
   width: auto;
@@ -201,4 +212,22 @@ form input {
   margin: 0 8px;
   padding: 0;
   width: 90px;
+}
+
+.disp-period-change-place {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 8px;
+}
+
+.disp-period-change-place h1{
+  font-size: 28px;
+  border: 0;
+}
+
+.disp-task-change-place {
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }

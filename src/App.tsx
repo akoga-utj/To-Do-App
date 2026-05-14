@@ -4,8 +4,10 @@ import AddForm from "./components/AddForm.tsx";
 import CategoryTab from "./components/CategoryTab.tsx";
 import RenameCategoryForm from "./components/RenameCategoryForm.tsx";
 import ChangeLimit from "./components/ChangeLimit.tsx";
+import Calendar from "./components/Calendar.tsx";
 import useTodos from "./hooks/useTodos.ts";
 import useCategories from "./hooks/useCategories.ts";
+import useCalendar from "./hooks/useCalendar.ts";
 
 const App = () => {
   type Todo_item = {
@@ -46,6 +48,14 @@ const App = () => {
     isRenameModalAnimate,
     isRenameModalVisible,
   } = useCategories();
+
+  const {
+    isCalendarModalAnimate,
+    isCalendarModalVisible,
+    dispPeriod,
+    handleCalendarDisp,
+    handleDispPeriodChange,
+  } = useCalendar();
 
   //Todoアイテム要素をカテゴリー判断して描写
   const TodoItems = todos.map((todo: Todo_item) => {
@@ -100,8 +110,18 @@ const App = () => {
           isOpen={isLimitModalAnimate}
         />
       )}
+      {isCalendarModalVisible && (
+        <Calendar 
+          isOpen={isCalendarModalAnimate}
+          onClose={handleCalendarDisp}
+          dispPeriod={dispPeriod}
+          onArrowClicked={handleDispPeriodChange}
+          categories={categories}
+        />
+      )}
       <h1>
-        Todos
+        <div className="header-title">Todos</div>
+        <button onClick={handleCalendarDisp}>カレンダーを表示</button>
         <button onClick={handlePurgeClick}>一括削除</button>
       </h1>
       <div className="categoryTabs">{CategoryTabs}</div>
