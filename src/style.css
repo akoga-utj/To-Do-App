@@ -25,10 +25,6 @@ body {
   margin-left: 8px;
 }
 
-.categorySelected {
-  background-color: #d4e1f5;
-}
-
 h1 {
   margin: 0;
   border-bottom: 1px solid #ccc;
@@ -230,4 +226,14 @@ form input {
   display: flex;
   flex: 1;
   justify-content: center;
+  gap: 8px;
+}
+
+.disp-task-change-place label {
+  display: flex;
+  margin: auto;
+}
+
+.disp-task-change-place input {
+  width: auto;
 }

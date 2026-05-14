@@ -1,7 +1,7 @@
 import { useReducer, useState, useEffect } from "react";
 import "../style.css";
-//練習目的も兼ねて、一部stateをReducerを用いて実装
 
+//練習目的も兼ねて、一部stateをReducerを用いて実装
 const dispDateReducer = (dispDate: any, action: any) => {
   switch(action.type) {
     case "single_arrow_left": {
@@ -61,6 +61,14 @@ const useCalendar = () => {
     month: nowDate.getMonth()+1,
   });
 
+  //現在表示するタスクを扱うstate
+  const [dispCategory, setDispCategory] = useState([
+    {id: 0, disp: true},
+    {id: 1, disp: true},
+    {id: 2, disp: true},
+    {id: 3, disp: true},
+  ]);
+
   useEffect(() => {
     console.log("年が変更されたので祝日APIをfetchします");
   }, [dispPeriod!.year])
@@ -88,12 +96,30 @@ const useCalendar = () => {
     });
   };
 
+  const handleDispCategoryChange = (CategoryId: number) => {
+    const newDispCategory = dispCategory.map((prev) => {
+      if(prev.id === CategoryId) {
+        return {
+          id: prev.id,
+          disp: !prev.disp
+        };
+      }  
+      else {
+        return prev;
+      }
+    });
+
+    setDispCategory(newDispCategory);
+  }
+
   return {
     isCalendarModalVisible,
     isCalendarModalAnimate,
     dispPeriod,
     handleCalendarDisp,
     handleDispPeriodChange,
+    dispCategory,
+    handleDispCategoryChange,
   };
 };
 

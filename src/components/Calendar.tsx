@@ -11,7 +11,12 @@ const Calendar = (props: any) => {
             <img src="../../img/keyboard_double_arrow_right.png" onClick={() => {props.onArrowClicked("double_arrow_right")}}></img>
           </div>
           <div className="disp-task-change-place">
-                チェックボックス群挿入スペース
+            <label>
+            <input type="checkbox" checked={props.dispCategory[0].disp} onChange={() => {props.onCheckboxChange(0)}} style={{accentColor: "#d4e1f5"}} />未定義</label>
+            <label><input type="checkbox" checked={props.dispCategory[1].disp} onChange={() => {props.onCheckboxChange(1)}} style={{accentColor: "#ffe4f1"}} />{props.categories[1].name}</label>
+            <label><input type="checkbox" checked={props.dispCategory[2].disp} onChange={() => {props.onCheckboxChange(2)}} style={{accentColor: "#e0ffe0"}} />{props.categories[2].name}</label>
+            <label>
+            <input type="checkbox" checked={props.dispCategory[3].disp} onChange={() => {props.onCheckboxChange(3)}} style={{accentColor: "#ffffe0"}} />{props.categories[3].name}</label>
           </div>
           <div style={{display:"flex", flex: 1, justifyContent: "flex-end"}}>
             <button
