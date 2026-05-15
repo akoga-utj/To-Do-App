@@ -2,7 +2,7 @@ import "../style.css";
 import useLimit from "../hooks/useLimit";
 import LimitForms from "./LimitForms";
 
-const ChangeLimit = (props: any) => {
+const ChangeLimitModal = (props: any) => {
   if (props.limitChangeItemId === null) {
     setTimeout(() => {
       return null;
@@ -59,4 +59,4 @@ const ChangeLimit = (props: any) => {
   );
 };
 
-export default ChangeLimit;
+export default ChangeLimitModal;

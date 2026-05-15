@@ -1,7 +1,7 @@
 import "../style.css";
 import React from "react";
 
-const RenameCategoryForm = (props: any) => {
+const RenameCategoryModal = (props: any) => {
   if (props.nameChangeCategoryId === null) {
     setTimeout(() => {
       return null;
@@ -50,4 +50,4 @@ const RenameCategoryForm = (props: any) => {
   );
 };
 
-export default RenameCategoryForm;
+export default RenameCategoryModal;

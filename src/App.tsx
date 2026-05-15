@@ -2,9 +2,9 @@ import "./style.css";
 import Todo from "./components/Todo.tsx";
 import AddForm from "./components/AddForm.tsx";
 import CategoryTab from "./components/CategoryTab.tsx";
-import RenameCategoryForm from "./components/RenameCategoryForm.tsx";
-import ChangeLimit from "./components/ChangeLimit.tsx";
-import Calendar from "./components/Calendar.tsx";
+import RenameCategoryModal from "./components/RenameCategoryModal.tsx";
+import ChangeLimitModal from "./components/ChangeLimitModal.tsx";
+import CalendarModal from "./components/CalendarModal.tsx";
 import useTodos from "./hooks/useTodos.ts";
 import useCategories from "./hooks/useCategories.ts";
 import useCalendar from "./hooks/useCalendar.ts";
@@ -50,15 +50,15 @@ const App = () => {
   } = useCategories();
 
   const {
-    isCalendarModalAnimate,
-    isCalendarModalVisible,
     dispPeriod,
+    dispCategory,
+    calendarRefs,
+    thisMonthHolidays,
     handleCalendarDisp,
     handleDispPeriodChange,
-    dispCategory,
     handleDispCategoryChange,
-    calendarRefs,
-    holidays,
+    isCalendarModalAnimate,
+    isCalendarModalVisible,
   } = useCalendar();
 
   //Todoアイテム要素をカテゴリー判断して描写
@@ -99,7 +99,7 @@ const App = () => {
   return (
     <div className="container">
       {isRenameModalVisible && (
-        <RenameCategoryForm
+        <RenameCategoryModal
           nameChangeCategoryId={nameChangeCategoryId}
           categories={categories}
           onSubmit={renameCategory}
@@ -107,7 +107,7 @@ const App = () => {
         />
       )}
       {isLimitModalVisible && (
-        <ChangeLimit
+        <ChangeLimitModal
           todos={todos}
           limitChangeItemId={limitChangeItemId}
           onSubmit={handleLimitsChanged}
@@ -115,7 +115,7 @@ const App = () => {
         />
       )}
       {isCalendarModalVisible && (
-        <Calendar 
+        <CalendarModal
           isOpen={isCalendarModalAnimate}
           onClose={handleCalendarDisp}
           dispPeriod={dispPeriod}
@@ -124,7 +124,8 @@ const App = () => {
           dispCategory={dispCategory}
           onCheckboxChange={handleDispCategoryChange}
           calendarRefs={calendarRefs}
-          holidays={holidays}
+          thisMonthHolidays={thisMonthHolidays}
+          todos={todos}
         />
       )}
       <h1>
