@@ -87,6 +87,19 @@ form input {
   padding: 4px;
 }
 
+table {
+  box-sizing: border-box;
+  /* background-color: #3333ff; */
+  border: 1px solid black;
+}
+
+td {
+  /*モーダルウィンドウサイズからpadding分を引いたものを均等分割*/
+  width: calc((600px - (32px * 2) - (16px * 2)) / 7);
+  text-align: left;
+  border: 1px solid #aaa;
+}
+
 /* 以下、モーダルウィンドウ用 */
 .modal {
   position: absolute;

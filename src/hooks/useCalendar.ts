@@ -77,8 +77,10 @@ const useCalendar = () => {
     weeks: 5,
   });
 
+  
+
   //祝日情報(年単位)を扱うstate
-  const [holidays, setHolidays] = useState();
+  const [holidays, setHolidays] = useState(initialHolidays);
 
   //祝日APIをfetch
   useEffect(() => {
@@ -92,11 +94,24 @@ const useCalendar = () => {
 
   //初回実行時も週数、祝日情報を確認
   useEffect(() => {
+    checkHolidays();
     checkWeeks();
   }, [])
 
   //祝日確認関数
-  const checkHolidays = async () => {};
+  const checkHolidays = async () => {
+    try {
+      const targetYear = ("0000"+ String(dispPeriod!.year)).slice(-4);
+      const fetchData = await fetch(`https://national-holidays.jp/${targetYear}`);
+      const resData = await fetchData.json();
+      console.log(resData);
+    }
+    catch (err) {
+      console.error("祝日取得に失敗しました。");
+      setHolidays(initialHolidays);
+    }
+  };
+
 
   //週数確認関数
   const checkWeeks = () => {
@@ -194,5 +209,13 @@ const useCalendar = () => {
     holidays,
   };
 };
+
+const initialHolidays: any[] = [];
+for(let i = 1; i <= 12; i ++) {
+  initialHolidays.push({
+    month: i,
+    dates: [],
+  });
+}
 
 export default useCalendar;

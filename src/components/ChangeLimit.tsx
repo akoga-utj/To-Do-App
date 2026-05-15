@@ -25,7 +25,7 @@ const ChangeLimit = (props: any) => {
     <>
       <div className="modal">
         <div className={`modal-msgspace ${props.isOpen ? "open" : ""}  `}>
-          新しいカテゴリー名を入力してください
+          日付を選択してください
           <LimitForms
             year={dates.year}
             month={dates.month}
